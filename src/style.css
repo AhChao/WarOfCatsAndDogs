@@ -5,6 +5,10 @@
     border-radius: 10%;
 }
 
+.question{
+    width: 50%;
+}
+
 .greyOut {
     -webkit-filter: grayscale(100%);
        -moz-filter: grayscale(100%);
