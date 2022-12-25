@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>War Of Cats And Dogs</title>
+    <link rel="stylesheet" href="./lib/bootstrap.min.css" />
+    <link rel="stylesheet" href="./src/style.css" />
+    <link rel="icon" type="image/png" href="./img/race.png" />
+  </head>
+  <body id="app">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-12 h1">War of DOGS & CATS</div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <h2>DOGS</h2>
+          <img :src="optionDogUrl" class="optionImg" />
+        </div>
+        <div class="col-6">
+          <h2>CATS</h2>
+          <img :src="optionCatUrl" class="optionImg greyOut" />
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12 h3">Choose which kind of battle you want!</div>
+      </div>
+    </div>
+
+    <script src="./lib/vue.global.js"></script>
+    <script src="./lib/bootstrap.bundle.min.js"></script>
+    <script src="./src/main.js"></script>
+  </body>
+</html>
