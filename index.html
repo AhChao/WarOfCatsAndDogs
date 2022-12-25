@@ -25,12 +25,20 @@
           <h2>CATS</h2>
           <img :src="optionCatUrl" class="optionImg greyOut" />
         </div>
+        <div class="col-12 h3 mt-2">Choose which kind of battle you want!</div>
       </div>
-      <div class="row mt-2" v-show="battleType==''">
-        <div class="col-12 h3">Choose which kind of battle you want!</div>
+
+      <div class="row" v-show="battleType!=''">
+        <div class="col-12">
+          <img :src="questionImg" alt="" />
+        </div>
+        <div class="row answerZone mt-2" v-for="playerIndex in playerCount">
+          <div class="col-5 ms-3 mt-2 answerButton" v-for="(option,optionIndex) in options" @click="submitAnswer(optionIndex,playerIndex)">{{option}}</div>
+        </div>
       </div>
     </div>
 
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script src="./lib/vue.global.js"></script>
     <script src="./lib/bootstrap.bundle.min.js"></script>
     <script src="./src/main.js"></script>
