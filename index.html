@@ -16,7 +16,7 @@
         <div class="col-12 h1" v-show="battleType=='dog'">What is this DOG?</div>
         <div class="col-12 h1" v-show="battleType=='cat'">What is this CAT?</div>
       </div>
-      <div class="row" v-show="battleType==''">
+      <div class="row" v-show="phase=='selectBattleType'">
         <div class="col-6" @click="chooseBattleType('dog')">
           <h2>DOGS</h2>
           <img :src="optionDogUrl" class="optionImg" />
@@ -27,7 +27,7 @@
         </div>
         <div class="col-12 h3 mt-2">Choose which kind of battle you want!</div>
       </div>
-      <div class="row">
+      <div class="row" v-show="phase=='selectSetup'">
         <div class="col-12 h3">Setup</div>
         <div class="col-12">Question Count : <input type="number" v-model="questionCount" /></div>
         <div class="col-12">Player Count : <input type="number" v-model="playerCount" /></div>
@@ -37,7 +37,7 @@
         </div>
       </div>
 
-      <div class="row justify-content-center" v-show="battleType!=''">
+      <div class="row justify-content-center" v-show="phase=='battle'">
         <div class="col-12">
           <img :src="questionImg" class="question" alt="" />
         </div>

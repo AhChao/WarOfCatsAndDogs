@@ -20,7 +20,7 @@ const app = Vue.createApp({
             answerFilling: [],
             scoreRecording: [],
             playerColor: ['#CCC', '#BBB'],
-            phase: 'selectBattleType',//selectBattleType, selectSetup, battle
+            phase: 'battle',//selectBattleType, selectSetup, battle
         };
     },
     mounted() {
