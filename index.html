@@ -33,10 +33,16 @@
           <img :src="questionImg" class="question" alt="" />
         </div>
         <div class="row answerZone mt-2" v-for="playerIndex in playerCount">
-          <div class="col-5 ms-3 mt-2 mb-2 answerButton" v-for="(option,optionIndex) in options" @click="submitAnswer(optionIndex,playerIndex)">
+          <div class="col-5 ms-3 mt-2 mb-2 answerButton" :style="{'background-color':answerFilling[playerIndex-1]!=optionIndex? none : playerColor[playerIndex-1]}" v-for="(option,optionIndex) in options" @click="submitAnswer(optionIndex,playerIndex)">
             <span v-show="displayNameInZH">{{dogBreedTranslation[breedOptions[option]]}}<br /></span><span v-show="displayNameInEN">{{capitalizeFirstLetter(breedOptions[option])}}</span>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row text-center">
+      <div class="col-6" v-for="playerIndex in playerCount">
+        Player {{playerIndex}} <br />
+        {{scoreRecording[playerIndex-1]}}
       </div>
     </div>
 

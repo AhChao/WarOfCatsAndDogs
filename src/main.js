@@ -16,6 +16,9 @@ const app = Vue.createApp({
             dogBreedTranslation: [],
             displayNameInZH: true,
             displayNameInEN: true,
+            answerFilling: [],
+            scoreRecording: [],
+            playerColor: ['#CCC', '#BBB'],
         };
     },
     mounted() {
@@ -27,6 +30,12 @@ const app = Vue.createApp({
     methods: {
         init() {
             this.chooseBattleType('dog');
+            this.answerFilling = [];
+            this.scoreRecording = [];
+            for (let i = 0; i < this.playerCount; i++) {
+                this.answerFilling.push('-');
+                this.scoreRecording.push(0);
+            }
         },
         chooseBattleType(type) {
             this.battleType = type;
@@ -37,9 +46,24 @@ const app = Vue.createApp({
             new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
         },
         submitAnswer(optionIndex, playerIndex) {
+            console.log(this.answerFilling, playerIndex, this.answerFilling[playerIndex - 1]);
+            if (this.answerFilling[playerIndex - 1] != '-') return;//already select answer 
+            this.answerFilling[playerIndex - 1] = optionIndex;
+            console.log(this.answerFilling.filter(x => x != '-').length);
+            if (this.answerFilling.filter(x => x != '-').length != this.playerCount) {
+                return
+            }
+            this.roundSettlement();
+
+        },
+        roundSettlement() {
+            for (let i = 0; i < this.playerCount; i++) {
+                if (this.answerFilling[i] == this.answer) this.scoreRecording[i]++;
+            }
             let answerEN = "Answer is " + this.capitalizeFirstLetter(this.breedOptions[this.options[this.answer]]) + "!";
             let answerZH = "答案是 " + this.dogBreedTranslation[this.breedOptions[this.options[this.answer]]] + "!";
             alert(answerZH);
+            this.answerFilling.fill('-');
             this.newQuestion();
         },
         getDogQuestion() {
