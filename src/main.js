@@ -20,7 +20,8 @@ const app = Vue.createApp({
             answerFilling: [],
             scoreRecording: [],
             playerColor: ['#CCC', '#BBB'],
-            phase: 'battle',//selectBattleType, selectSetup, battle
+            playerIcon: [],
+            phase: 'selectBattleType',//selectBattleType, selectSetup, battle
         };
     },
     mounted() {
@@ -31,16 +32,29 @@ const app = Vue.createApp({
     },
     methods: {
         init() {
-            this.chooseBattleType('dog');
+            //this.chooseBattleType('dog');
+            this.phase = "selectBattleType";
             this.answerFilling = [];
             this.scoreRecording = [];
             for (let i = 0; i < this.playerCount; i++) {
                 this.answerFilling.push('-');
                 this.scoreRecording.push(0);
+                this.playerIcon.push(this.getRandom(16));
             }
         },
         chooseBattleType(type) {
             this.battleType = type;
+            this.phase = "selectSetup";
+        },
+        updateSetup() {
+            this.answerFilling = [];
+            this.scoreRecording = [];
+            for (let i = 0; i < this.playerCount; i++) {
+                this.answerFilling.push('-');
+                this.scoreRecording.push(0);
+                this.playerIcon.push(this.getRandom(16));
+            }
+            this.phase = "battle";
             this.updateBreed();
             this.newQuestion();
         },

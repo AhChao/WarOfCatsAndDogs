@@ -27,6 +27,10 @@
     border-radius: 5%;
 }
 
+.playerIcon{
+    width: 50px;
+    border-radius: 10px;
+}
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {

@@ -32,9 +32,11 @@
         <div class="col-12">Question Count : <input type="number" v-model="questionCount" /></div>
         <div class="col-12">Player Count : <input type="number" v-model="playerCount" /></div>
         <div class="col-12" v-for="playerIndex in playerCount">
+          <img :src="'./img/icon/'+playerIcon[playerIndex-1]+'.png'" class="playerIcon mb-2" :style="{'background-color':playerColor[playerIndex-1],}" />
           Player {{playerIndex}}
-          <input type="color" v-model="playerColor[playerCount-1]" />
+          <input type="color" v-model="playerColor[playerIndex-1]" />
         </div>
+        <div class="col-12"><button class="h4" @click="updateSetup()">Done</button></div>
       </div>
 
       <div class="row justify-content-center" v-show="phase=='battle'">
@@ -43,6 +45,7 @@
         </div>
         <div class="row answerZone mt-2" v-for="playerIndex in playerCount">
           <div class="col-12">
+            <img :src="'./img/icon/'+playerIcon[playerIndex-1]+'.png'" class="playerIcon mb-2" :style="{'background-color':playerColor[playerIndex-1],}" />
             Player {{playerIndex}} <br />
             {{scoreRecording[playerIndex-1]}}
           </div>
