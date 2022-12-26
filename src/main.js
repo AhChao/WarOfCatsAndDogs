@@ -1,3 +1,4 @@
+import translation from '../src/translation.js'
 const app = Vue.createApp({
     created() { },
     data() {
@@ -5,17 +6,21 @@ const app = Vue.createApp({
             battleType: '',//init='',cat/dog after chosen
             optionDogUrl: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/golden-retriever-royalty-free-image-506756303-1560962726.jpg?crop=0.672xw:1.00xh;0.166xw,0&resize=640:*',
             optionCatUrl: 'https://letstalkscience.ca/sites/default/files/2020-03/calico-cat.jpg',
-            dogApi: 'https://dog.ceo/dog-api/', //https://dog.ceo/api/breed/{breed}/images,
+            wikiLink: 'https://en.wikipedia.org/wiki/', //append name to search page,
             playerCount: 2,
             questionImg: '',
             options: ['0', '1', '2', '3'],
             optionCount: 4,
             answer: 0,
             breedOptions: [],
+            dogBreedTranslation: [],
+            displayNameInZH: true,
+            displayNameInEN: true,
         };
     },
     mounted() {
         this.init();
+        this.dogBreedTranslation = translation.dogBreedTranslation;
     },
     computed: {
     },
@@ -32,8 +37,9 @@ const app = Vue.createApp({
             new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
         },
         submitAnswer(optionIndex, playerIndex) {
-            console.log(optionIndex, playerIndex);
-            alert("Answer is " + this.breedOptions[this.options[this.answer]] + "!");
+            let answerEN = "Answer is " + this.capitalizeFirstLetter(this.breedOptions[this.options[this.answer]]) + "!";
+            let answerZH = "答案是 " + this.dogBreedTranslation[this.breedOptions[this.options[this.answer]]] + "!";
+            alert(answerZH);
             this.newQuestion();
         },
         getDogQuestion() {
@@ -82,3 +88,4 @@ const app = Vue.createApp({
     }
 });
 app.mount('#app');
+app.component('translation', translation);

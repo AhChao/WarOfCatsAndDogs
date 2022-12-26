@@ -28,12 +28,14 @@
         <div class="col-12 h3 mt-2">Choose which kind of battle you want!</div>
       </div>
 
-      <div class="row" v-show="battleType!=''">
+      <div class="row justify-content-center" v-show="battleType!=''">
         <div class="col-12">
-          <img :src="questionImg" class="queston" alt="" />
+          <img :src="questionImg" class="question" alt="" />
         </div>
         <div class="row answerZone mt-2" v-for="playerIndex in playerCount">
-          <div class="col-5 ms-3 mt-2 answerButton" v-for="(option,optionIndex) in options" @click="submitAnswer(optionIndex,playerIndex)">{{capitalizeFirstLetter(breedOptions[option])}}</div>
+          <div class="col-5 ms-3 mt-2 mb-2 answerButton" v-for="(option,optionIndex) in options" @click="submitAnswer(optionIndex,playerIndex)">
+            <span v-show="displayNameInZH">{{dogBreedTranslation[breedOptions[option]]}}<br /></span><span v-show="displayNameInEN">{{capitalizeFirstLetter(breedOptions[option])}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -41,6 +43,6 @@
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script src="./lib/vue.global.js"></script>
     <script src="./lib/bootstrap.bundle.min.js"></script>
-    <script src="./src/main.js"></script>
+    <script type="module" src="./src/main.js"></script>
   </body>
 </html>
