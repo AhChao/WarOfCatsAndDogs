@@ -8,6 +8,7 @@ const app = Vue.createApp({
             optionCatUrl: 'https://letstalkscience.ca/sites/default/files/2020-03/calico-cat.jpg',
             wikiLink: 'https://en.wikipedia.org/wiki/', //append name to search page,
             playerCount: 2,
+            questionCount: 10,
             questionImg: '',
             options: ['0', '1', '2', '3'],
             optionCount: 4,
@@ -19,6 +20,7 @@ const app = Vue.createApp({
             answerFilling: [],
             scoreRecording: [],
             playerColor: ['#CCC', '#BBB'],
+            phase: 'selectBattleType',//selectBattleType, selectSetup, battle
         };
     },
     mounted() {
@@ -62,12 +64,8 @@ const app = Vue.createApp({
             }
             let answerEN = "Answer is " + this.capitalizeFirstLetter(this.breedOptions[this.options[this.answer]]) + "!";
             let answerZH = "答案是 " + this.dogBreedTranslation[this.breedOptions[this.options[this.answer]]] + "!";
-            alert(answerZH);
-            this.answerFilling.fill('-');
-            this.newQuestion();
-        },
-        getDogQuestion() {
-
+            this.showMessageWithToast(this.displayNameInZH ? answerZH : answerEN);
+            setTimeout(() => this.newQuestion(), 3000);
         },
         updateBreed() {
             if (this.battleType == 'dog') {
@@ -76,6 +74,7 @@ const app = Vue.createApp({
             }
         },
         newQuestion() {
+            this.answerFilling.fill('-');
             let totalBreedCount = this.breedOptions.length;
             this.options = this.getNonDuplicatedRandom(this.optionCount, totalBreedCount);
             this.answer = this.getRandom(this.optionCount);
@@ -107,8 +106,13 @@ const app = Vue.createApp({
         capitalizeFirstLetter(string) {
             if (string == null) return "";
             return string.charAt(0).toUpperCase() + string.slice(1);
-        }
-
+        },
+        showMessageWithToast(msg) {
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+            document.getElementById("snackbar").innerText = msg;
+        },
     }
 });
 app.mount('#app');
