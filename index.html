@@ -42,7 +42,7 @@
       <div class="row justify-content-center" v-show="phase=='battle'">
         <div class="col-12" v-if="modeTag.timeCount">Time : {{counterRemaining}}</div>
         <div class="col-12">
-          <img :src="questionImg" class="question" alt="" />
+          <img id="questionImg" :src="questionImg" class="question" alt="" />
         </div>
         <div class="row answerZone mt-2" v-for="playerIndex in playerCount">
           <div class="col-12">

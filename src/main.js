@@ -110,9 +110,17 @@ const app = Vue.createApp({
         newQuestion() {
             this.answerFilling.fill('-');
             let totalBreedCount = this.breedOptions.length;
-            this.options = this.getNonDuplicatedRandom(this.optionCount, totalBreedCount);
+            this.options.fill('-');
+            let tempOption = this.getNonDuplicatedRandom(this.optionCount, totalBreedCount);
+            console.log(tempOption);
             this.answer = this.getRandom(this.optionCount);
-            this.questionImg = this.getImageByBreed(this.options[this.answer]);
+            this.questionImg = this.getImageByBreed(tempOption[this.answer]);
+            console.log(this.questionImg);
+            let questionImgEle = document.getElementById("questionImg");
+            while (!questionImgEle.complete) {
+                //just wait till the image loaded 
+            }
+            this.options = tempOption;
             if (this.modeTag.timeCount) {
                 this.counterRemaining = this.counterMax;
                 this.counterInstance = setInterval(() => {
