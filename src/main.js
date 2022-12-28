@@ -8,7 +8,8 @@ const app = Vue.createApp({
             optionCatUrl: 'https://letstalkscience.ca/sites/default/files/2020-03/calico-cat.jpg',
             wikiLink: 'https://en.wikipedia.org/wiki/', //append name to search page,
             playerCount: 2,
-            questionCount: 10,
+            questionCount: 0,
+            questionMax: 10,
             questionImg: '',
             options: ['0', '1', '2', '3'],
             optionCount: 4,
@@ -21,6 +22,14 @@ const app = Vue.createApp({
             scoreRecording: [],
             playerColor: ['#CCC', '#BBB'],
             playerIcon: [],
+            modeTag: {
+                "timeCount": "true",
+                "nextByButton": "false"
+            },//timecount / wait for next / 
+            counterRemaining: 10,
+            counterMax: 10,
+            counterInstance: null,
+            playerRoundTimeScore: [0, 0],
             phase: 'selectBattleType',//selectBattleType, selectSetup, battle
         };
     },
@@ -37,6 +46,7 @@ const app = Vue.createApp({
             this.answerFilling = [];
             this.scoreRecording = [];
             for (let i = 0; i < this.playerCount; i++) {
+                this.playerRoundTimeScore.push('-');
                 this.answerFilling.push('-');
                 this.scoreRecording.push(0);
                 this.playerIcon.push(this.getRandom(16));
@@ -50,6 +60,7 @@ const app = Vue.createApp({
             this.answerFilling = [];
             this.scoreRecording = [];
             for (let i = 0; i < this.playerCount; i++) {
+                this.playerRoundTimeScore.push('-');
                 this.answerFilling.push('-');
                 this.scoreRecording.push(0);
                 this.playerIcon.push(this.getRandom(16));
@@ -62,10 +73,9 @@ const app = Vue.createApp({
             new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
         },
         submitAnswer(optionIndex, playerIndex) {
-            console.log(this.answerFilling, playerIndex, this.answerFilling[playerIndex - 1]);
             if (this.answerFilling[playerIndex - 1] != '-') return;//already select answer 
             this.answerFilling[playerIndex - 1] = optionIndex;
-            console.log(this.answerFilling.filter(x => x != '-').length);
+            if (this.modeTag.timeCount) this.playerRoundTimeScore[playerIndex - 1] = this.counterRemaining;
             if (this.answerFilling.filter(x => x != '-').length != this.playerCount) {
                 return
             }
@@ -73,8 +83,18 @@ const app = Vue.createApp({
 
         },
         roundSettlement() {
+            if (this.modeTag.timeCount) {
+                clearInterval(this.counterInstance);
+            }
             for (let i = 0; i < this.playerCount; i++) {
-                if (this.answerFilling[i] == this.answer) this.scoreRecording[i]++;
+                if (this.answerFilling[i] == this.answer) {
+                    if (this.modeTag.timeCount) {
+                        this.scoreRecording[i] += this.playerRoundTimeScore[i];
+                    }
+                    else {
+                        this.scoreRecording[i]++;
+                    }
+                }
             }
             let answerEN = "Answer is " + this.capitalizeFirstLetter(this.breedOptions[this.options[this.answer]]) + "!";
             let answerZH = "答案是 " + this.dogBreedTranslation[this.breedOptions[this.options[this.answer]]] + "!";
@@ -92,9 +112,16 @@ const app = Vue.createApp({
             let totalBreedCount = this.breedOptions.length;
             this.options = this.getNonDuplicatedRandom(this.optionCount, totalBreedCount);
             this.answer = this.getRandom(this.optionCount);
-            console.log(this.options, this.answer, this.options[this.answer]);
             this.questionImg = this.getImageByBreed(this.options[this.answer]);
-
+            if (this.modeTag.timeCount) {
+                this.counterRemaining = this.counterMax;
+                this.counterInstance = setInterval(() => {
+                    this.counterRemaining--;
+                    if (this.counterRemaining <= 0) {
+                        clearInterval(this.counterInstance);
+                    }
+                }, 1000);
+            }
         },
         getImageByBreed(breedIndex) {
             if (this.battleType == 'dog') {
