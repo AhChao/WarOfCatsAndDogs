@@ -36,11 +36,22 @@
           Player {{playerIndex}}
           <input type="color" v-model="playerColor[playerIndex-1]" />
         </div>
-        <div class="col-12"><button class="h4" @click="updateSetup()">Done</button></div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-5 ms-2" v-for="(tagValue, tagKey, tagIndex) in modeTag">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" :id="'switch'+tagIndex" v-model="modeTag[tagKey]" />
+                <label class="form-check-label" :for="'switch'+tagIndex">{{capitalizeFirstLetter(tagKey)}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12"><button class="h4 btn btn-secondary" @click="updateSetup()">Done</button></div>
       </div>
 
       <div class="row justify-content-center" v-show="phase=='battle'">
         <div class="col-12" v-if="modeTag.timeCount">Time : {{counterRemaining}}</div>
+        <div class="col-12" v-if="modeTag.nextByButton&&nextButtonDisplay"><button class="btn btn-secondary" @click="newQuestion()">{{this.questionCount == 0 ? 'Start' : 'Next'}}</button></div>
         <div class="col-12">
           <img id="questionImg" :src="questionImg" class="question" alt="" />
         </div>
@@ -52,7 +63,7 @@
           </div>
 
           <div class="col-5 ms-3 mt-2 mb-2 answerButton" :style="{'background-color':answerFilling[playerIndex-1]!=optionIndex? none : playerColor[playerIndex-1]}" v-for="(option,optionIndex) in options" @click="submitAnswer(optionIndex,playerIndex)">
-            <span v-show="displayNameInZH">{{dogBreedTranslation[breedOptions[option]]}}<br /></span><span v-show="displayNameInEN">{{capitalizeFirstLetter(breedOptions[option])}}</span>
+            <span v-show="modeTag.displayNameInZH">{{dogBreedTranslation[breedOptions[option]]}}<br /></span><span v-show="modeTag.displayNameInEN">{{capitalizeFirstLetter(breedOptions[option])}}</span>
           </div>
         </div>
       </div>

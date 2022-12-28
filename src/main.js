@@ -16,16 +16,17 @@ const app = Vue.createApp({
             answer: 0,
             breedOptions: [],
             dogBreedTranslation: [],
-            displayNameInZH: true,
-            displayNameInEN: true,
             answerFilling: [],
             scoreRecording: [],
             playerColor: ['#CCC', '#BBB'],
             playerIcon: [],
             modeTag: {
                 "timeCount": "true",
-                "nextByButton": "false"
+                "nextByButton": "true",
+                "displayNameInZH": 'true',
+                "displayNameInEN": 'true',
             },//timecount / wait for next / 
+            nextButtonDisplay: false,
             counterRemaining: 10,
             counterMax: 10,
             counterInstance: null,
@@ -67,7 +68,11 @@ const app = Vue.createApp({
             }
             this.phase = "battle";
             this.updateBreed();
-            this.newQuestion();
+            if (this.modeTag.nextByButton) {
+                this.nextButtonDisplay = true;
+            } else {
+                this.newQuestion();
+            }
         },
         getGoogleTranslateElementInit() {
             new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
@@ -86,6 +91,9 @@ const app = Vue.createApp({
             if (this.modeTag.timeCount) {
                 clearInterval(this.counterInstance);
             }
+            if (this.modeTag.nextByButton) {
+                this.nextButtonDisplay = true;
+            }
             for (let i = 0; i < this.playerCount; i++) {
                 if (this.answerFilling[i] == this.answer) {
                     if (this.modeTag.timeCount) {
@@ -98,7 +106,7 @@ const app = Vue.createApp({
             }
             let answerEN = "Answer is " + this.capitalizeFirstLetter(this.breedOptions[this.options[this.answer]]) + "!";
             let answerZH = "答案是 " + this.dogBreedTranslation[this.breedOptions[this.options[this.answer]]] + "!";
-            this.showMessageWithToast(this.displayNameInZH ? answerZH : answerEN);
+            this.showMessageWithToast(this.modeTag.displayNameInZH ? answerZH : answerEN);
             setTimeout(() => this.newQuestion(), 3000);
         },
         updateBreed() {
@@ -108,6 +116,10 @@ const app = Vue.createApp({
             }
         },
         newQuestion() {
+            this.questionCount++;
+            if (this.modeTag.nextByButton) {
+                this.nextButtonDisplay = false;
+            }
             this.answerFilling.fill('-');
             let totalBreedCount = this.breedOptions.length;
             this.options.fill('-');
@@ -152,9 +164,12 @@ const app = Vue.createApp({
         getRandom(max) {//0-max-1
             return Math.floor(Math.random() * max);
         },
-        capitalizeFirstLetter(string) {
-            if (string == null) return "";
-            return string.charAt(0).toUpperCase() + string.slice(1);
+        capitalizeFirstLetter(str) {
+            if (str == null) return "";
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        },
+        insertBeforeCapital(str) {
+            return str.replace(/([A-Z])/g, ' $1').trim();
         },
         showMessageWithToast(msg) {
             var x = document.getElementById("snackbar");
