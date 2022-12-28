@@ -50,6 +50,7 @@
       </div>
 
       <div class="row justify-content-center" v-show="phase=='battle'">
+        <div class="col-12 h3" v-if="questionCount>0&&questionMax>=questionCount">Question {{questionCount}}.</div>
         <div class="col-12" v-if="modeTag.timeCount">Time : {{counterRemaining}}</div>
         <div class="col-12" v-if="modeTag.nextByButton&&nextButtonDisplay"><button class="btn btn-secondary" @click="newQuestion()">{{this.questionCount == 0 ? 'Start' : 'Next'}}</button></div>
         <div class="col-12">

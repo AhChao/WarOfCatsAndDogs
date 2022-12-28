@@ -68,7 +68,7 @@ const app = Vue.createApp({
             }
             this.phase = "battle";
             this.updateBreed();
-            if (this.modeTag.nextByButton) {
+            if (this.modeTag.nextByButton && this.questionCount < this.questionMax) {
                 this.nextButtonDisplay = true;
             } else {
                 this.newQuestion();
@@ -91,9 +91,6 @@ const app = Vue.createApp({
             if (this.modeTag.timeCount) {
                 clearInterval(this.counterInstance);
             }
-            if (this.modeTag.nextByButton) {
-                this.nextButtonDisplay = true;
-            }
             for (let i = 0; i < this.playerCount; i++) {
                 if (this.answerFilling[i] == this.answer) {
                     if (this.modeTag.timeCount) {
@@ -107,7 +104,13 @@ const app = Vue.createApp({
             let answerEN = "Answer is " + this.capitalizeFirstLetter(this.breedOptions[this.options[this.answer]]) + "!";
             let answerZH = "答案是 " + this.dogBreedTranslation[this.breedOptions[this.options[this.answer]]] + "!";
             this.showMessageWithToast(this.modeTag.displayNameInZH ? answerZH : answerEN);
-            setTimeout(() => this.newQuestion(), 3000);
+            setTimeout(() => {
+                if (this.modeTag.nextByButton && this.questionCount < this.questionMax) {
+                    this.nextButtonDisplay = true;
+                } else {
+                    this.newQuestion();
+                }
+            }, 3000);
         },
         updateBreed() {
             if (this.battleType == 'dog') {
@@ -117,6 +120,21 @@ const app = Vue.createApp({
         },
         newQuestion() {
             this.questionCount++;
+            if (this.questionCount > this.questionMax) {
+                let highestScore = -1;
+                let highestIndex = -1;
+                for (let i = 0; i < this.scoreRecording.length; i++) {
+                    if (this.scoreRecording[i] > highestScore) {
+                        highestScore = this.scoreRecording[i];
+                        highestIndex = i;
+                    }
+                }
+                let winnerMessage = this.modeTag.displayNameInZH ?
+                    ("玩家 " + (highestIndex * 1 + 1) + " 以 " + highestScore + " 分獲得勝利！") :
+                    ("Player " + (highestIndex * 1 + 1) + " won the battle with " + highestScore + " points!");
+                alert(winnerMessage);
+                return;
+            }
             if (this.modeTag.nextByButton) {
                 this.nextButtonDisplay = false;
             }
