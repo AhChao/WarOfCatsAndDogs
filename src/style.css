@@ -39,7 +39,7 @@
     left: 200%;
     transform: translate(-50%, -50%);
     animation-name: fade-in-up;
-    animation-duration: 3s;
+    animation-duration: 3.2s;
     animation-iteration-count: 1;
     animation-timing-function: ease;
 }

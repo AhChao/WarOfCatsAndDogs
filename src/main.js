@@ -30,7 +30,8 @@ const app = Vue.createApp({
             counterRemaining: 10,
             counterMax: 10,
             counterInstance: null,
-            playerRoundTimeScore: [0, 0],
+            playerRoundScore: [0, 0],
+            answerOrder: [],
             phase: 'selectBattleType',//selectBattleType, selectSetup, battle
             showScoreAnimation: false,
         };
@@ -48,7 +49,7 @@ const app = Vue.createApp({
             this.answerFilling = [];
             this.scoreRecording = [];
             for (let i = 0; i < this.playerCount; i++) {
-                this.playerRoundTimeScore.push('-');
+                this.playerRoundScore.push('-');
                 this.answerFilling.push('-');
                 this.scoreRecording.push(0);
                 this.playerIcon.push(this.getRandom(16));
@@ -62,7 +63,7 @@ const app = Vue.createApp({
             this.answerFilling = [];
             this.scoreRecording = [];
             for (let i = 0; i < this.playerCount; i++) {
-                this.playerRoundTimeScore.push('-');
+                this.playerRoundScore.push('-');
                 this.answerFilling.push('-');
                 this.scoreRecording.push(0);
                 this.playerIcon.push(this.getRandom(16));
@@ -81,7 +82,8 @@ const app = Vue.createApp({
         submitAnswer(optionIndex, playerIndex) {
             if (this.answerFilling[playerIndex - 1] != '-') return;//already select answer 
             this.answerFilling[playerIndex - 1] = optionIndex;
-            if (this.modeTag.timeCount) this.playerRoundTimeScore[playerIndex - 1] = this.counterRemaining;
+            if (this.modeTag.timeCount) this.playerRoundScore[playerIndex - 1] = this.counterRemaining;
+            this.answerOrder.push(playerIndex - 1);
             if (this.answerFilling.filter(x => x != '-').length != this.playerCount) {
                 return
             }
@@ -92,13 +94,17 @@ const app = Vue.createApp({
             if (this.modeTag.timeCount) {
                 clearInterval(this.counterInstance);
             }
-            for (let i = 0; i < this.playerCount; i++) {
-                if (this.answerFilling[i] == this.answer) {
+            let someoneAnswerCorrect = false;
+            for (let i = 0; i < this.answerOrder.length; i++) {
+                let index = this.answerOrder[i];
+                if (this.answerFilling[index] == this.answer) {
                     if (this.modeTag.timeCount) {
-                        this.scoreRecording[i] += this.playerRoundTimeScore[i];
+                        this.scoreRecording[index] += this.playerRoundScore[index];
                     }
                     else {
-                        this.scoreRecording[i]++;
+                        this.playerRoundScore[index] = someoneAnswerCorrect ? 1 : 3;
+                        this.scoreRecording[index] += this.playerRoundScore[index];
+                        someoneAnswerCorrect = true;
                     }
                 }
             }
@@ -122,6 +128,7 @@ const app = Vue.createApp({
             }
         },
         newQuestion() {
+            this.answerOrder = [];
             this.questionCount++;
             if (this.questionCount > this.questionMax) {
                 let highestScore = -1;

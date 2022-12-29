@@ -61,7 +61,7 @@
             Player {{playerIndex}} <br />
             <div class="scoreArea">
               {{scoreRecording[playerIndex-1]}}
-              <span class="plusAni secondary" :style="{'color':answerFilling[playerIndex-1] == answer? '#00cc66':'#cc0000'}" v-if="showScoreAnimation">{{answerFilling[playerIndex-1] == answer ? '+'+playerRoundTimeScore[playerIndex-1] : 'X'}}</span>
+              <span class="plusAni secondary" :style="{'color':answerFilling[playerIndex-1] == answer? '#00cc66':'#cc0000'}" v-if="showScoreAnimation">{{answerFilling[playerIndex-1] == answer ? '+'+playerRoundScore[playerIndex-1] : 'X'}}</span>
             </div>
           </div>
 
