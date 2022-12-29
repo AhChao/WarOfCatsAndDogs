@@ -57,6 +57,8 @@ const app = Vue.createApp({
         },
         chooseBattleType(type) {
             this.battleType = type;
+            if (this.battleType == 'cat') document.title = "🐈Meow";
+            if (this.battleType == 'dog') document.title = "🐕Woof";
             this.phase = "selectSetup";
         },
         updateSetup() {
