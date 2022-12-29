@@ -32,6 +32,7 @@ const app = Vue.createApp({
             counterInstance: null,
             playerRoundTimeScore: [0, 0],
             phase: 'selectBattleType',//selectBattleType, selectSetup, battle
+            showScoreAnimation: false,
         };
     },
     mounted() {
@@ -101,10 +102,12 @@ const app = Vue.createApp({
                     }
                 }
             }
+            this.showScoreAnimation = true;
             let answerEN = "Answer is " + this.capitalizeFirstLetter(this.breedOptions[this.options[this.answer]]) + "!";
             let answerZH = "答案是 " + this.dogBreedTranslation[this.breedOptions[this.options[this.answer]]] + "!";
             this.showMessageWithToast(this.modeTag.displayNameInZH ? answerZH : answerEN);
             setTimeout(() => {
+                this.showScoreAnimation = false;
                 if (this.modeTag.nextByButton && this.questionCount < this.questionMax) {
                     this.nextButtonDisplay = true;
                 } else {
@@ -194,7 +197,7 @@ const app = Vue.createApp({
             x.className = "show";
             setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
             document.getElementById("snackbar").innerText = msg;
-        },
+        }
     }
 });
 app.mount('#app');

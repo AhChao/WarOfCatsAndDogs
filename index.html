@@ -50,8 +50,7 @@
       </div>
 
       <div class="row justify-content-center" v-show="phase=='battle'">
-        <div class="col-12 h3" v-if="questionCount>0&&questionMax>=questionCount">Question {{questionCount}}.</div>
-        <div class="col-12" v-if="modeTag.timeCount">Time : {{counterRemaining}}</div>
+        <div class="col-12 h3" v-if="questionCount>0&&questionMax>=questionCount">Question {{questionCount}}. <span class="h6" v-if="modeTag.timeCount">Time : {{counterRemaining}}</span></div>
         <div class="col-12" v-if="modeTag.nextByButton&&nextButtonDisplay"><button class="btn btn-secondary" @click="newQuestion()">{{this.questionCount == 0 ? 'Start' : 'Next'}}</button></div>
         <div class="col-12">
           <img id="questionImg" :src="questionImg" class="question" alt="" />
@@ -60,7 +59,10 @@
           <div class="col-12">
             <img :src="'./img/icon/'+playerIcon[playerIndex-1]+'.png'" class="playerIcon mb-2" :style="{'background-color':playerColor[playerIndex-1],}" />
             Player {{playerIndex}} <br />
-            {{scoreRecording[playerIndex-1]}}
+            <div class="scoreArea">
+              {{scoreRecording[playerIndex-1]}}
+              <span class="plusAni secondary" :style="{'color':answerFilling[playerIndex-1] == answer? '#00cc66':'#cc0000'}" v-if="showScoreAnimation">{{answerFilling[playerIndex-1] == answer ? '+'+playerRoundTimeScore[playerIndex-1] : 'X'}}</span>
+            </div>
           </div>
 
           <div class="col-5 ms-3 mt-2 mb-2 answerButton" :style="{'background-color':answerFilling[playerIndex-1]!=optionIndex? none : playerColor[playerIndex-1]}" v-for="(option,optionIndex) in options" @click="submitAnswer(optionIndex,playerIndex)">

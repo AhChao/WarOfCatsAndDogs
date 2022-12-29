@@ -32,6 +32,37 @@
     border-radius: 10px;
 }
 
+/* Plus animator */
+.plusAni {
+    color: #3f3f3f;
+    position: absolute;
+    left: 200%;
+    transform: translate(-50%, -50%);
+    animation-name: fade-in-up;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease;
+}
+
+@keyframes fade-in-up {
+    0%,
+    10% {
+      top: 50%;
+      opacity: 1;
+    }
+    100% {
+      top: -100%;
+      opacity: 0;
+    }
+}
+
+.scoreArea{
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
     visibility: hidden; /* Hidden by default. Visible on click */
