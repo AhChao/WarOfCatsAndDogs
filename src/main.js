@@ -25,6 +25,7 @@ const app = Vue.createApp({
                 "nextByButton": "true",
                 "displayNameInZH": 'true',
                 "displayNameInEN": 'true',
+                "retrieverOnly": 'false'
             },//timecount / wait for next / 
             nextButtonDisplay: false,
             counterRemaining: 10,
@@ -127,6 +128,11 @@ const app = Vue.createApp({
             if (this.battleType == 'dog') {
                 let callingResult = this.callApiWithGet('https://dog.ceo/api/breeds/list/all');
                 this.breedOptions = Object.keys(callingResult.message);
+                if (this.modeTag.retrieverOnly) {
+                    this.breedOptions = ["labrador", "retriever"];
+                    this.optionCount = 2;
+                    this.options = ['0', '1'];
+                }
             }
         },
         newQuestion() {
